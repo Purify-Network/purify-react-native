@@ -14,6 +14,10 @@ import {HomeScreen, SettingsScreen} from './screens';
 // import { BlurView } from 'expo-blur';
 
 const styles = StyleSheet.create({
+  backgroundStyle:{
+    height:'100%',
+    width:'100%'
+  },
   red: {
     color: 'red',
   },
@@ -36,7 +40,7 @@ const Tabs = (): ReactElement => {
       />
       <Tab.Navigator
         screenOptions={{
-          tabBarStyle: {position: 'absolute'},
+          tabBarStyle: {},
           headerStyle: {
             height: 80, // Specify the height of your custom header
           },
