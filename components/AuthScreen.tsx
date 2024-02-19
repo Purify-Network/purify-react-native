@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import CryptoJS from 'crypto-js';
+import CryptoJS from "react-native-crypto-js";
 
 const AuthScreen = () => {
   const [username, setUsername] = useState('');
