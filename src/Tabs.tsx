@@ -33,11 +33,6 @@ const Tabs = (): ReactElement => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {},
@@ -60,7 +55,6 @@ const Tabs = (): ReactElement => {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
-    </SafeAreaView>
   );
 };
 
