@@ -1,11 +1,16 @@
 import React, {ReactElement} from 'react';
 import {SafeAreaView} from 'react-native';
 import AuthScreen from './AuthScreen';
+import MainService from '../services/MainService';
 
-const HomeScreen = (): ReactElement => {
+type HomeScreenProps = {
+  server: MainService;
+}
+
+const HomeScreen = (props: HomeScreenProps): ReactElement => {
   return (
     <SafeAreaView>
-      <AuthScreen />
+      <AuthScreen server={props.server} />
     </SafeAreaView>
   );
 };

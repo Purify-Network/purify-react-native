@@ -6,9 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import CryptoJS from 'react-native-crypto-js';
+import MainService from '../services/MainService';
 
-const AuthScreen = (): ReactElement => {
+type AuthScreenProps = {
+  server: MainService
+}
+
+const AuthScreen = (props: AuthScreenProps): ReactElement => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,14 +21,18 @@ const AuthScreen = (): ReactElement => {
 
   const handleSignUp = () => {
     if (confirmPassword === password) {
-      const hash = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
-      console.log(hash);
+      console.log("matched");
+      console.log(props.server);
+      console.log(props.server.signup);
+      props.server.signup(username, password, email);
+    }else{
+      console.log("passwords dont match");
     }
     console.log('Signing up...', username, email, password, confirmPassword);
   };
 
   const handleLogin = () => {
-    // Implement login logic here
+    props.server.login(username, password);
     console.log('Logging in...', username, password);
   };
 
@@ -86,7 +94,7 @@ const AuthScreen = (): ReactElement => {
           <TextInput
             style={authStyles.input}
             placeholder="Confirm Password"
-            value={password}
+            value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}
             secureTextEntry
           />

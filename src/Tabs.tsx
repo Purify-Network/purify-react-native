@@ -11,7 +11,13 @@ import {AppHeader} from './components';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getHeaderTitle} from '@react-navigation/elements';
 import {HomeScreen, SettingsScreen} from './screens';
+import MainService from './services/MainService';
+import MapScreen from './screens/MapScreen';
 // import { BlurView } from 'expo-blur';
+
+type TabsProps = {
+  server: MainService
+};
 
 const styles = StyleSheet.create({
   backgroundStyle:{
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = (): ReactElement => {
+const Tabs = (props: TabsProps): ReactElement => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -52,7 +58,17 @@ const Tabs = (): ReactElement => {
             />
           ),
         }}>
-        <Tab.Screen name="Home" component={HomeScreen} />
+
+        <Tab.Screen name="Home" children={()=>{
+          return(
+            <HomeScreen server={props.server} />
+          )
+        }} />
+        <Tab.Screen name="Map" children={()=>{
+          return(
+            <MapScreen server={props.server} />
+          )
+        }} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
   );
