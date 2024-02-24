@@ -28,38 +28,6 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loginMode, setLoginMode] = useState(true);
 
-  // const storageService = new Storage({
-  //   size: 1000,
-  //   storageBackend: AsyncStorage, 
-  //   defaultExpires: 1000 * 3600 * 24,
-  //   enableCache: true,
-  //   sync: {}
-  // });
-
-  // storageService.load({
-  //     key: 'loginToken',
-  //     // autoSync: true,
-  //     // syncInBackground: true,
-  //     // syncParams: {
-  //     //   extraFetchOptions: {
-  //     //   },
-  //     //   someFlag: true
-  //     // }
-  //   })
-  //   .then(ret => {
-  //     console.log("pepepepepepe");
-  //     console.log(ret.userid);
-  //   })
-  //   .catch(err => {
-  //     console.warn(err.message);
-  //     switch (err.name) {
-  //       case 'NotFoundError':
-  //         break;
-  //       case 'ExpiredError':
-  //         break;
-  //     }
-  //   });
-
   _retrieveData('loginToken');
 
   const handleSignUp = () => {
@@ -76,15 +44,6 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
 
   const handleLogin = () => {
     props.server.login(username, password).then((data: any) => {
-      // storageService.save({
-      //       key: 'loginToken', // Note: Do not use underscore("_") in key!
-      //       data: {
-      //         // from: 'some other site',
-      //         // userid: 
-      //         token: data.login_token
-      //       },
-      //       expires: 1000 * 3600
-      //     });
       _storeData("loginToken", data.login_token);
     });
     console.log('Logging in...', username, password);
@@ -93,8 +52,6 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
   const switchMode = () => {
     setLoginMode(!loginMode);
   };
-
-  
 
   return (
     <View>
