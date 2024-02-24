@@ -4,12 +4,21 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  StyleSheet
 } from 'react-native';
 import MainService from '../services/MainService';
+// import StorageService from '../services/StorageService';
+
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { _retrieveData, _storeData } from '../services/StorageService';
 
 type AuthScreenProps = {
   server: MainService
+}
+
+type LoginResponse = {
+  login_token: string
 }
 
 const AuthScreen = (props: AuthScreenProps): ReactElement => {
@@ -18,6 +27,40 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loginMode, setLoginMode] = useState(true);
+
+  // const storageService = new Storage({
+  //   size: 1000,
+  //   storageBackend: AsyncStorage, 
+  //   defaultExpires: 1000 * 3600 * 24,
+  //   enableCache: true,
+  //   sync: {}
+  // });
+
+  // storageService.load({
+  //     key: 'loginToken',
+  //     // autoSync: true,
+  //     // syncInBackground: true,
+  //     // syncParams: {
+  //     //   extraFetchOptions: {
+  //     //   },
+  //     //   someFlag: true
+  //     // }
+  //   })
+  //   .then(ret => {
+  //     console.log("pepepepepepe");
+  //     console.log(ret.userid);
+  //   })
+  //   .catch(err => {
+  //     console.warn(err.message);
+  //     switch (err.name) {
+  //       case 'NotFoundError':
+  //         break;
+  //       case 'ExpiredError':
+  //         break;
+  //     }
+  //   });
+
+  _retrieveData('loginToken');
 
   const handleSignUp = () => {
     if (confirmPassword === password) {
@@ -32,13 +75,26 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
   };
 
   const handleLogin = () => {
-    props.server.login(username, password);
+    props.server.login(username, password).then((data: any) => {
+      // storageService.save({
+      //       key: 'loginToken', // Note: Do not use underscore("_") in key!
+      //       data: {
+      //         // from: 'some other site',
+      //         // userid: 
+      //         token: data.login_token
+      //       },
+      //       expires: 1000 * 3600
+      //     });
+      _storeData("loginToken", data.login_token);
+    });
     console.log('Logging in...', username, password);
   };
 
   const switchMode = () => {
     setLoginMode(!loginMode);
   };
+
+  
 
   return (
     <View>

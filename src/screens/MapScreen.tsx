@@ -1,7 +1,11 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import MapView, {Marker, Region} from 'react-native-maps';
 import MainService from '../services/MainService';
+
+import Mapbox from '@rnmapbox/maps';
+Mapbox.setAccessToken('pk.eyJ1IjoicHVyaWZ5LW5ldHdvcmsiLCJhIjoiY2xzeXpsdjBqMGpraDJxbm55bWZ4aDV3YSJ9.yQsnZeNbvSsx-rw-J4s5Bg');
+
 
 type MapScreenProps = {
     server: MainService
@@ -32,68 +36,93 @@ const styles = StyleSheet.create({
 });
 
 const MapScreen = (props: MapScreenProps): ReactElement => {
-  const region: Region = {
-    latitude: 10.78825,
-    longitude: 12.4324,
-    latitudeDelta: 0.922,
-    longitudeDelta: 0.421,
-  };
 
+  const [coordinates] = useState([-5, 55]);
   const [markers, setMarkers] = useState<MarkerType[]>([]);
+  const [calloutVisible, setCalloutVisible] = useState(false);
 
-useEffect(() => {
-    const markersTmp: MarkerType[] = [];
-    props.server.getNearbyLocs(10, 10, 2)!
-    .then((data) => {
-      console.log("lklk");
-      console.log(data);
-      console.log("jkjkjkj");
-      data.forEach((loc: { latitude: any; longitude: any; name: any; }) => {
-          markersTmp.push({
-              latlng: {
-                  latitude: loc.latitude,
-                  longitude: loc.longitude
-              },
-              title: loc.name
-          })
-  })
-  console.log(markers);
-  setMarkers(markersTmp);
-    });
-}, [])
+    useEffect(() => {
+        const markersTmp: MarkerType[] = [];
+        props.server.getNearbyLocs(10, 10, 200)!
+        .then((data) => {
+        console.log("lklk");
+        console.log(data);
+        console.log("jkjkjkj");
+        data.forEach((loc: { latitude: any; longitude: any; name: any; }) => {
+            markersTmp.push({
+                latlng: {
+                    latitude: loc.latitude,
+                    longitude: loc.longitude
+                },
+                title: loc.name
+            })
+    })
+    console.log(markers);
+    setMarkers(markersTmp);
+        });
+    }, [])
+
+
+
+
+
+
+
+const markerView = (color: string) => {
+    return (      
+        <View
+        style={{
+          height: 20,
+          width: 20,
+          backgroundColor: 'green',
+          borderColor: 'black',
+          borderWidth: 2,
+          borderRadius: 50,
+        }}
+      ></View>
+      );
+};
+
+const onMarkerPress = () => {
+  setCalloutVisible(true);
+};
+
+const loadAnnotationUK = (lat: number, lng: number) => {
+  return (
+    <Mapbox.PointAnnotation
+      key={`marker${lat}-${lng}`}
+      id={`marker${lat}-${lng}`}
+      coordinate={[lat, lng]}
+      onSelected={onMarkerPress}
+    >
+    {markerView("green")}
+      <Mapbox.Callout
+        title="Welcome to London!"
+        contentStyle={{ borderRadius: 5 }}
+      ></Mapbox.Callout>
+    </Mapbox.PointAnnotation>
+  );
+};
+
+
+
 
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <MapView region={region} style={styles.map}>
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            coordinate={marker.latlng}
-            title={marker.title}
-            // description={marker.description}
-          />
-        ))}
-      </MapView>
+        <Mapbox.MapView 
+        style={styles.map}
+        styleURL='mapbox://styles/purify-network/clsz0u56w01cv01p4e9p5g0kx'>
+            <Mapbox.Camera zoomLevel={4} centerCoordinate={coordinates} />
+            {markers.map((marker, index) => (
+                <View key={`marker${marker.latlng.latitude}-${marker.latlng.longitude}`}>{loadAnnotationUK(marker.latlng.latitude, marker.latlng.longitude)}</View>
+            ))}
+        </Mapbox.MapView>
     </SafeAreaView>
-
-    /* <SafeAreaView>
-    <Text>Hello</Text>
-    <MapView
-     initialRegion={{
-       latitude: 37.78825,
-       longitude: -122.4324,
-       latitudeDelta: 0.0922,
-       longitudeDelta: 0.0421,
-     }}
-     zoomControlEnabled={true}
-     style={{
-       width: "100%",
-       height: "100%"
-     }}
-    />
-    </SafeAreaView> */
   );
 };
 
 export default MapScreen;
+
+
+

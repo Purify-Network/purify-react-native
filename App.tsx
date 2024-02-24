@@ -10,7 +10,7 @@ const App = (): ReactElement => {
 
   return (
     <NavigationContainer>
-      {true ? <Tabs server={server}/> : <AuthScreen server={server}/>}
+      {false ? <Tabs server={server}/> : <AuthScreen server={server}/>}
     </NavigationContainer>
   );
 };

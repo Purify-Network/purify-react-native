@@ -1,9 +1,10 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   StatusBar,
   useColorScheme,
+  View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {AppHeader} from './components';
@@ -27,6 +28,9 @@ const styles = StyleSheet.create({
   red: {
     color: 'red',
   },
+  map: {
+    flex: 1
+  }
 });
 
 const Tab = createBottomTabNavigator();
@@ -38,25 +42,26 @@ const Tabs = (props: TabsProps): ReactElement => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+
   return (
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {},
           headerStyle: {
-            height: 80, // Specify the height of your custom header
+            height: 70, // Specify the height of your custom header
           },
           // tabBarBackground: () => (
           // <BlurView tint="light" intensity={100} style={StyleSheet.absoluteFill} />
           // ),
-          header: ({route, options}) => (
-            <AppHeader
-              name={getHeaderTitle(options, route.name)}
-              style1={Object.assign({}, styles.red, {
-                fontWeight: 'bold',
-                fontSize: 30,
-              })}
-            />
-          ),
+          // header: ({route, options}) => (
+          //   <AppHeader
+          //     name={getHeaderTitle(options, route.name)}
+          //     style1={Object.assign({}, styles.red, {
+          //       fontWeight: 'bold',
+          //       fontSize: 30,
+          //     })}
+          //   />
+          // ),
         }}>
 
         <Tab.Screen name="Home" children={()=>{

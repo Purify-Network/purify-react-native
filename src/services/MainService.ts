@@ -18,9 +18,10 @@ class MainService {
             await fetch( 
                 'http://64.23.146.168:3000/login', requestOptions) 
                 .then(response => { 
-                    response.json() 
+                    return response.json() 
                         .then(data => { 
                             console.log(data);
+                            return data;
                         }); 
                 }) 
         } 
