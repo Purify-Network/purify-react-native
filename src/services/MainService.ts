@@ -15,11 +15,12 @@ class MainService {
         }; 
         console.log("tttttt");
         try { 
-            await fetch( 
+            return await fetch( 
                 'http://64.23.146.168:3000/login', requestOptions) 
                 .then(response => { 
                     return response.json() 
                         .then(data => { 
+                            console.log("ddddd");
                             console.log(data);
                             return data;
                         }); 
@@ -78,6 +79,54 @@ class MainService {
         } 
         catch (error) { 
             // return new Promise<any>();
+            console.error(error); 
+        } 
+    } 
+
+
+    genericGetNoParams = (endpoint: string) => { 
+        const requestOptions = { 
+            method: 'GET', 
+            headers: { 'Content-Type': 'application/json' }
+        }; 
+        console.log("fffff");
+        let url = `http://64.23.146.168:3000/${endpoint}`;
+        try { 
+            return fetch( 
+                url, requestOptions) 
+                .then(response => { 
+                    return response.json() 
+                        .then(data => { 
+                            console.log("ggg");
+                            console.log(data); 
+                            return data;
+                        }); 
+                }) 
+        } 
+        catch (error) { 
+            // return new Promise<any>();
+            console.error(error); 
+        } 
+    } 
+
+    new_loc = async (name: string, image_path: string, lat: number, lng: number, epoch: number) => { 
+        const requestOptions = { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ name: name, image_path: image_path, latitude: lat, longitude: lng, epoch: epoch }) 
+        }; 
+        console.log("fffff");
+        try { 
+            await fetch( 
+                'http://64.23.146.168:3000/new-loc', requestOptions) 
+                .then(response => { 
+                    response.json() 
+                        .then(data => { 
+                            console.log(data);
+                        }); 
+                }) 
+        } 
+        catch (error) { 
             console.error(error); 
         } 
     } 

@@ -6,11 +6,15 @@ export const _storeData = async (key: string, data: any) => {
     } catch (error) {}
   };
 
-  export const _retrieveData = async (key: string) => {
+  export const _retrieveData = async (key: string): Promise<string | null> => {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
         console.log(value);
+        return value;
       }
-    } catch (error) {}
+      return null;
+    } catch (error) {
+        return null;
+    }
   };

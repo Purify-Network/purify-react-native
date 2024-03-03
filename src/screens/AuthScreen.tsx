@@ -44,6 +44,8 @@ const AuthScreen = (props: AuthScreenProps): ReactElement => {
 
   const handleLogin = () => {
     props.server.login(username, password).then((data: any) => {
+      console.log("gggggg");
+      console.log(data);
       _storeData("loginToken", data.login_token);
     });
     console.log('Logging in...', username, password);

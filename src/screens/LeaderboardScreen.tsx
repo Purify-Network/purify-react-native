@@ -13,16 +13,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const SettingsScreen = (): ReactElement => {
+const LeaderboardScreen = (): ReactElement => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Text>
-      Hello
-      World
+      Leaderboard
       </Text>
     </SafeAreaView>
   );
 };
 
-export default SettingsScreen;
+export default LeaderboardScreen;
