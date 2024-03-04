@@ -144,7 +144,11 @@ const Tabs = (props: TabsProps): ReactElement => {
            )
         }}/>
          
-        <Tab.Screen name="leaderboard" component={LeaderboardScreen} 
+        <Tab.Screen name="leaderboard" children={()=>{
+          return(
+            <LeaderboardScreen server={props.server} />
+          )
+        }} 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon

@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Button, Dimensions, FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import MapView, {Marker, Region} from 'react-native-maps';
 import MainService from '../services/MainService';
 import { Icon } from 'react-native-elements'
@@ -7,6 +7,7 @@ import GetLocation from 'react-native-get-location';
 import { LocationPuck } from '@rnmapbox/maps';
 
 import Mapbox from '@rnmapbox/maps';
+import LocationPanel from '../components/LocationPanel';
 Mapbox.setAccessToken('pk.eyJ1IjoicHVyaWZ5LW5ldHdvcmsiLCJhIjoiY2xzeXpsdjBqMGpraDJxbm55bWZ4aDV3YSJ9.yQsnZeNbvSsx-rw-J4s5Bg');
 
 
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 10,
-    backgroundColor: "red"
+    // backgroundColor: "red"
   },
   sectionTitle: {
     fontSize: 24,
@@ -42,25 +43,50 @@ const styles = StyleSheet.create({
   },
   addLocButton: {
     width: 140,
-    height: 50,
+    height: 60,
     borderRadius: 35,
     backgroundColor: "#609EEF",
-    marginTop: "200%",
+    // marginTop: "100%",
+    position: "absolute",
+    // flexDirection: "row",
     // top:10,
-    bottom: 150,
-    // left: "100%",
-    marginLeft: "50%",
-    right: 70,
+    bottom: 10,
+    // flex: 1,
+    left: Dimensions.get('window').width/2 - 70,
+    // marginLeft: "50%",
+    // right: 70,
     zIndex: 100,
     borderBlockColor: '#eeeeee',
     borderLeftColor: '#eeeeee',
     borderRightColor: '#eeeeee',
     borderWidth: 2
   },
-  text: {
-    width: 100,
-    height: 100,
+  locInfoPanel: {
+    width: "80%",
+    height: "77%",
+    borderRadius: 35,
+    backgroundColor: "#eeeeee",
     position: "absolute",
+    // marginTop: "10%",
+    top:"5%",
+    // bottom: 150,
+    // left: "100%",
+    // marginLeft: "5%",
+    right: "10%",
+    zIndex: 300,
+    borderBlockColor: "#609EEF",
+    borderLeftColor: "#609EEF",
+    borderRightColor: "#609EEF",
+    borderWidth: 2
+  },
+  aquaSpotImg: {
+    width: 150,
+    height: 220,
+    position: "absolute",
+    left: 10,
+    borderRadius: 20,
+    top: 10,
+
   }
 });
 
@@ -69,22 +95,18 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
   const [coordinates, setCoordinates] = useState([-5, 55]);
   const [markers, setMarkers] = useState<MarkerType[]>([]);
   const [calloutVisible, setCalloutVisible] = useState(false);
-  const [startCoordinates, setStartCoordinates] = useState([-5, 55]);
-  let init = false;
+  const [startCoordinates, setStartCoordinates] = useState<number[]>();
 
     useEffect(() => {
-        getCurrentLocInterval();
         getMarkers();
     }, [])
 
 
     const getMarkers = () => {
+        console.log("ffff");
         const markersTmp: MarkerType[] = [];
         props.server.getNearbyLocs(10, 10, 200)!
         .then((data) => {
-        console.log("lklk");
-        console.log(data);
-        console.log("jkjkjkj");
         data.forEach((loc: { latitude: any; longitude: any; name: any; }) => {
             markersTmp.push({
                 latlng: {
@@ -94,39 +116,17 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
                 title: loc.name
             })
     })
-    console.log(markers);
     setMarkers(markersTmp);
         });
     };
 
 
-    const getCurrentLocInterval = () => {
-        GetLocation.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 60000,
-      })
-      .then(currentLocation => {
-        console.log("7777");
-        console.log(currentLocation);
-        // setCoordinates([0,0]);
-          setCoordinates([currentLocation.latitude, currentLocation.longitude]);
-          if (!init){
-            console.log(coordinates);
-            setStartCoordinates([currentLocation.latitude, currentLocation.longitude]); 
-            console.log("prprprp");
-            setInterval(() => {
-                getCurrentLocInterval();
-            }, 1000);  
-            init = true;
+    const getCurrentLocInterval = (currentLocation: Mapbox.Location) => {
+          setCoordinates([currentLocation.coords.latitude, currentLocation.coords.longitude]);
+          if (!startCoordinates){
+            setStartCoordinates([currentLocation.coords.latitude, currentLocation.coords.longitude]); 
           }
-      })
-      .catch(error => {
-          const { code, message } = error;
-          console.warn(code, message);
-      })
     };
-
-
 
 
 const markerView = (color: string) => {
@@ -146,9 +146,11 @@ const markerView = (color: string) => {
 
 const onMarkerPress = () => {
   setCalloutVisible(true);
+    console.log(calloutVisible);
 };
 
 const makeMarker = (lat: number, lng: number, color: string) => {
+    console.log("ghghgh");
   return (
     <Mapbox.PointAnnotation
       key={`marker${lat}-${lng}`}
@@ -157,71 +159,69 @@ const makeMarker = (lat: number, lng: number, color: string) => {
       onSelected={onMarkerPress}
     >
     {markerView(color)}
-      {/* <Mapbox.Callout
-        title="Welcome to London!"
-        contentStyle={{ width: "100%", borderRadius: 5 }}
-      ></Mapbox.Callout> */}
     </Mapbox.PointAnnotation>
   );
 };
 
 const addLocButtonPressed = () => {
-    props.server.new_loc("pizza", "image path", coordinates[1], coordinates[0], Math.floor(Date.now()/1000))
     setTimeout(() => {
+        props.server.new_loc("pizza", "image path", coordinates[1], coordinates[0], Math.floor(Date.now()/1000))
+    }, 500);
+     setTimeout(() => {
         getMarkers();
     }, 1000);
 };
 
 
-// const currentLocationMarker = (lat: number, lng: number) => {
-//     console.log("latLng");
-//     console.log(lat);
-//     console.log(lng);
-//     console.log(coordinates);
-//   return (
-//     <Mapbox.PointAnnotation
-//       key={`me${lat}-${lng}`}
-//       id={`me${lat}-${lng}`}
-//       coordinate={[lat, lng]}
-//     //   onSelected={onMarkerPress}
-//     >
-//     <Icon
-//                 name='location-arrow'
-//                 type='font-awesome'
-//                 color='red'
-//                 size={36} />
-    
-//       <Mapbox.Callout
-//         title="Welcome to London!"
-//         contentStyle={{ borderRadius: 5 }}
-//       ></Mapbox.Callout>
-//     </Mapbox.PointAnnotation>
-//   );
-// };
+const upd = (location: Mapbox.Location) => {
+    getCurrentLocInterval(location);
+}
 
+const closePopout = () => {
+    setCalloutVisible(false);
+}
 
+const showCallout = () => {
+    console.log("lllllll")
+    // if(calloutVisible){
+    return (
+        <View style={styles.locInfoPanel}>
+            {/* <Image
+                  source={require('../../assets/fountain.jpeg')} // Replace with your company logo
+                  style={styles.aquaSpotImg}
+                /> */}
+                <LocationPanel 
+                name={'water fountain'} 
+                coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
+                imageSource='../../assets/fountain.jpeg'
+                >
+            </LocationPanel>
+        </View>
+    )
+    // }
+} 
 
 
   return (
     <SafeAreaView style={styles.safeArea}>
+        {calloutVisible ? showCallout(): ""}
+
         <TouchableHighlight
           onPress={addLocButtonPressed}
           underlayColor="white"
           style={styles.addLocButton}>
-         <View style={styles.addLocButton}>
-            {/* <Text style={styles.text}>+</Text> */}
-          </View>
+            <Text>New AquaSpot</Text>
         </TouchableHighlight>
 
         <Mapbox.MapView 
+        onPress={closePopout}
         style={styles.map}
         styleURL='mapbox://styles/purify-network/clsz0u56w01cv01p4e9p5g0kx'>
-            <Mapbox.Camera zoomLevel={16} centerCoordinate={[startCoordinates[1], startCoordinates[0]]} />
-            {/* {makeMarker(coordinates[1], coordinates[0], "blue")} */}
+            <Mapbox.Camera zoomLevel={16} centerCoordinate={(startCoordinates ? [startCoordinates[1], startCoordinates[0]] : [0,0])} />
             {markers.map((marker, index) => (
                 makeMarker(marker.latlng.latitude, marker.latlng.longitude, "green")
             ))}
-            <Mapbox.LocationPuck puckBearing='heading'></Mapbox.LocationPuck>
+            <Mapbox.UserLocation onUpdate={upd} showsUserHeadingIndicator></Mapbox.UserLocation>
         </Mapbox.MapView>
        
     </SafeAreaView>
@@ -229,6 +229,9 @@ const addLocButtonPressed = () => {
 };
 
 export default MapScreen;
+
+
+
 
 
 
