@@ -8,6 +8,7 @@ import { LocationPuck } from '@rnmapbox/maps';
 
 import Mapbox from '@rnmapbox/maps';
 import LocationPanel from '../components/LocationPanel';
+import NewTestPanel from '../components/NewTestPanel';
 Mapbox.setAccessToken('pk.eyJ1IjoicHVyaWZ5LW5ldHdvcmsiLCJhIjoiY2xzeXpsdjBqMGpraDJxbm55bWZ4aDV3YSJ9.yQsnZeNbvSsx-rw-J4s5Bg');
 
 
@@ -94,8 +95,10 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
 
   const [coordinates, setCoordinates] = useState([-5, 55]);
   const [markers, setMarkers] = useState<MarkerType[]>([]);
-  const [calloutVisible, setCalloutVisible] = useState(false);
   const [startCoordinates, setStartCoordinates] = useState<number[]>();
+
+  const [locationPanelVisible, setlocationPanelVisible] = useState(false);
+  const [newTestPanelVisible, setNewTestPanelVisible] = useState(false);
 
     useEffect(() => {
         getMarkers();
@@ -145,8 +148,8 @@ const markerView = (color: string) => {
 };
 
 const onMarkerPress = () => {
-  setCalloutVisible(true);
-    console.log(calloutVisible);
+  setlocationPanelVisible(true);
+    console.log(locationPanelVisible);
 };
 
 const makeMarker = (lat: number, lng: number, color: string) => {
@@ -164,12 +167,13 @@ const makeMarker = (lat: number, lng: number, color: string) => {
 };
 
 const addLocButtonPressed = () => {
-    setTimeout(() => {
-        props.server.new_loc("pizza", "image path", coordinates[1], coordinates[0], Math.floor(Date.now()/1000))
-    }, 500);
-     setTimeout(() => {
-        getMarkers();
-    }, 1000);
+    // setTimeout(() => {
+    //     props.server.new_loc("pizza", "image path", coordinates[1], coordinates[0], Math.floor(Date.now()/1000))
+    // }, 500);
+    //  setTimeout(() => {
+    //     getMarkers();
+    // }, 1000);
+    setNewTestPanelVisible(true);
 };
 
 
@@ -178,18 +182,13 @@ const upd = (location: Mapbox.Location) => {
 }
 
 const closePopout = () => {
-    setCalloutVisible(false);
+    setlocationPanelVisible(false);
+    setNewTestPanelVisible(false);
 }
 
-const showCallout = () => {
-    console.log("lllllll")
-    // if(calloutVisible){
+const showlocationPanel = () => {
     return (
         <View style={styles.locInfoPanel}>
-            {/* <Image
-                  source={require('../../assets/fountain.jpeg')} // Replace with your company logo
-                  style={styles.aquaSpotImg}
-                /> */}
                 <LocationPanel 
                 name={'water fountain'} 
                 coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
@@ -198,13 +197,27 @@ const showCallout = () => {
             </LocationPanel>
         </View>
     )
-    // }
+} 
+
+
+const showNewTestPanel = () => {
+    return (
+        <View style={styles.locInfoPanel}>
+                <NewTestPanel 
+                name={'water fountain'} 
+                coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
+                imageSource='../../assets/fountain.jpeg'
+                >
+            </NewTestPanel>
+        </View>
+    )
 } 
 
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        {calloutVisible ? showCallout(): ""}
+        {locationPanelVisible ? showlocationPanel(): ""}
+        {newTestPanelVisible ? showNewTestPanel(): ""}
 
         <TouchableHighlight
           onPress={addLocButtonPressed}

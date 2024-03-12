@@ -20,7 +20,6 @@ import { Icon } from 'react-native-elements'
 import LeaderboardScreen from './screens/LeaderboardScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import HomeScreen from './screens/HomeScreen';
-import NewTestScreen from './screens/NewTestScreen';
 
 type TabsProps = {
   server: MainService
@@ -100,21 +99,6 @@ const Tabs = (props: TabsProps): ReactElement => {
           ),
           tabBarShowLabel: false,
         }}>
-{/* <Tab.Screen name="Logo" 
-         children={()=>{
-          return(
-            <NewTestScreen server={props.server} />
-          )
-        }}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require('../assets/middle-icon.png')} // Replace with your company logo
-                  style={styles.logo}
-                />
-               )
-            }}
-          /> */}
          <Tab.Screen name="Home" children={()=>{
           return(
             <HomeScreen server={props.server} />

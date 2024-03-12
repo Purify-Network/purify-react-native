@@ -1,6 +1,7 @@
 import React, {ReactElement} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Button, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import MapView, {Marker, Region} from 'react-native-maps';
+import CameraComponent from '../components/CameraComponent';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -45,12 +46,19 @@ const styles = StyleSheet.create({
 
 const ProfileScreen = (): ReactElement => {
 
+  const camera = () => {
+    // let cam = new CameraComponent()
+  }
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.profPicContainer}>
         <Image source={require('../../assets/sharky.png')} style={styles.profPic}></Image>
       </View>
       <Text style={styles.username}>@sgrutman978</Text>
+      <Button title="hello" onPress={camera}></Button>
+      <CameraComponent />
     </SafeAreaView>
   );
 };
