@@ -2,6 +2,7 @@ import React, {ReactElement, useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text} from 'react-native';
 import AuthScreen from './AuthScreen';
 import MainService from '../services/MainService';
+import { Camera } from 'react-native-vision-camera';
 
 type HomeScreenProps = {
   server: MainService;
@@ -81,6 +82,13 @@ const HomeScreen = (props: HomeScreenProps): ReactElement => {
           setLocCount(data.count);
         });
     }, [])
+
+    useEffect(() => {
+      async function getPermission() {
+        const newCameraPermission = await Camera.requestCameraPermission();
+      }
+      getPermission();
+  }, [])
 
   return (
     <SafeAreaView style={styles.safeArea}>

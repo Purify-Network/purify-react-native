@@ -433,35 +433,54 @@ import {
   Linking,
   Image,
 } from 'react-native';
-import {Camera, useCameraDevices, useCameraDevice, CameraDevice} from 'react-native-vision-camera';
+import {Camera, useCameraDevices, useCameraDevice, CameraDevice, useCameraFormat, Templates} from 'react-native-vision-camera';
 
 const CameraComponent =() => {
 //   const camera = useRef<Camera>(null);
 //   console.log("kdgldfsn");
-//   const devices = useCameraDevices();
+  const devices = useCameraDevices().keys;
 //   console.log("devices");
-//   console.log(devices);
+  console.log(devices);
 //   const device = devices.back;
 
   const camera = useRef<Camera>(null);
 console.log("ttooooototototo");
-    const devices = Camera.getAvailableCameraDevices();
-    console.log("pooooop");
-    console.log(JSON.stringify(devices, null, 2));
+console.log(useCameraDevice('back'));
+     let device = useCameraDevice('back')!;
 
-    let device: any;
+     const screenAspectRatio = 1;
+
+     const format = useCameraFormat(device, [
+      ...Templates.Instagram,
+      { photoAspectRatio: 1 },
+      // { photoResolution: { width: 3048, height: 3048 } },
+    ]);
+
+    //  const format = useCameraFormat(device, Templates.FrameProcessingRGB)
+     
+    // const devices = Camera.getAvailableCameraDevices();
+    // console.log("pooooop");
+    // console.log(JSON.stringify(devices, null, 2));
+
+    // let device: any;
 
 
   const [showCamera, setShowCamera] = useState(false);
   const [imageSource, setImageSource] = useState('');
 
   useEffect(() => {
-    async function getPermission() {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      console.log(newCameraPermission);
-      device = useCameraDevice('back')!;
-    }
-    getPermission();
+    // async function getPermission() {
+      // const newCameraPermission = await Camera.requestCameraPermission();
+      // console.log(newCameraPermission);
+      // let r = useCameraDevices();
+      // console.log(r);
+      // let q = r
+      // console.log("ututututu");
+      // console.log(useCameraDevice('back'));
+      // device = useCameraDevice('back');
+    // }
+    // getPermission();
+    setShowCamera(true);
   }, []);
 
   const capturePhoto = async () => {
@@ -473,9 +492,9 @@ console.log("ttooooototototo");
     }
   };
 
-  if (device == null) {
-    return <Text>Camera not available</Text>;
-  }
+  // if (device == null) {
+  //   return <Text>Camera not available</Text>;
+  // }
 
   return (
     <View style={styles.container}>
@@ -487,6 +506,7 @@ console.log("ttooooototototo");
             device={device}
             isActive={showCamera}
             photo={true}
+            format={format}
           />
 
           <View style={styles.buttonContainer}>
@@ -608,7 +628,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    aspectRatio: 9 / 16,
+    aspectRatio: 1,
   },
 });
 
