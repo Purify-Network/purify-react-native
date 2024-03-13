@@ -22,7 +22,7 @@ interface Coordinates {
 const LocationPanel: React.FC<LocationPanelProps> = ({ name, coordinates, testingInfo, imageSource }) => {
     return (
       <View style={styles2.container}>
-        <Image source={require('../../assets/fountain.jpeg')} style={styles2.image} resizeMode="cover" />
+        <Image source={require('../../assets/fountain.jpeg')} style={styles2.image} />
         <Text style={styles2.title}>{name}</Text>
         <Text style={styles2.subtitle}>Coordinates: {coordinates.latitude}, {coordinates.longitude}</Text>
         <FlatList
@@ -67,10 +67,11 @@ const LocationPanel: React.FC<LocationPanelProps> = ({ name, coordinates, testin
       marginBottom: 5,
     },
     image: {
-      width: '100%',
-      height: 200,
+      width: "100%",
+      height: "10%",
       borderRadius: 10,
       marginBottom: 10,
+      aspectRatio: 1
     },
   });
 

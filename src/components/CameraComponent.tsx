@@ -435,7 +435,7 @@ import {
 } from 'react-native';
 import {Camera, useCameraDevices, useCameraDevice, CameraDevice, useCameraFormat, Templates} from 'react-native-vision-camera';
 
-const CameraComponent =() => {
+const CameraComponent = (props: any) => {
 //   const camera = useRef<Camera>(null);
 //   console.log("kdgldfsn");
   const devices = useCameraDevices().keys;
@@ -490,6 +490,10 @@ console.log(useCameraDevice('back'));
       setShowCamera(false);
       console.log(photo.path);
     }
+  };
+
+  const usePhoto = () => {
+    props.callback(imageSource);
   };
 
   // if (device == null) {
@@ -570,7 +574,7 @@ console.log(useCameraDevice('back'));
                   borderWidth: 2,
                   borderColor: 'white',
                 }}
-                onPress={() => setShowCamera(true)}>
+                onPress={() => usePhoto()}>
                 <Text style={{color: 'white', fontWeight: '500'}}>
                   Use Photo
                 </Text>

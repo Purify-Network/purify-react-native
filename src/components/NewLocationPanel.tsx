@@ -49,9 +49,10 @@ interface Coordinates {
     },
     image: {
       width: '100%',
-      height: 200,
+      // height: 200,
       borderRadius: 10,
       marginBottom: 10,
+      aspectRatio: 1
       // marginTop: -20
       // backgroundColor: "red"
     },
@@ -65,17 +66,27 @@ interface Coordinates {
 const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, testingInfo, imageSource }) => {
 
   const [showCamera, setShowCamera] = useState(false);
+  const [imgPath, setImgPath] = useState('https://i.fbcd.co/products/resized/resized-750-500/f8b30a80c3dd7846280debe018062435fb0273b9a391c2d05b1783ac5a473077.jpg');
 
   const loadCamera = () => {
     setShowCamera(true);
   };
 
+  const getPhotoPath = (path: string) => {
+    setImgPath(`file://'${path}`);
+    console.log("pathhhhh");
+    console.log(path);
+    setShowCamera(false);
+}
+
     return (
       <View>
-        { showCamera ? <View style={styles2.cameraContainer}><CameraComponent /></View> : 
+        { showCamera ? <View style={styles2.cameraContainer}><CameraComponent callback={getPhotoPath} /></View> : 
           <View style={styles2.container}>
             <Pressable onPress={loadCamera}>
-              <Image source={require('../../assets/fountain.jpeg')} style={styles2.image} resizeMode="cover" />
+              <Image source={{
+                uri: imgPath,
+              }} style={styles2.image} resizeMode="cover" />
             </Pressable>
             <Text style={styles2.title}>{name}</Text>
             <Text style={styles2.subtitle}>Coordinates: {coordinates.latitude}, {coordinates.longitude}</Text>
