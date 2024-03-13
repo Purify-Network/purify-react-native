@@ -8,7 +8,7 @@ import { LocationPuck } from '@rnmapbox/maps';
 
 import Mapbox from '@rnmapbox/maps';
 import LocationPanel from '../components/LocationPanel';
-import NewTestPanel from '../components/NewTestPanel';
+import NewLocationPanel from '../components/NewLocationPanel';
 Mapbox.setAccessToken('pk.eyJ1IjoicHVyaWZ5LW5ldHdvcmsiLCJhIjoiY2xzeXpsdjBqMGpraDJxbm55bWZ4aDV3YSJ9.yQsnZeNbvSsx-rw-J4s5Bg');
 
 
@@ -62,6 +62,25 @@ const styles = StyleSheet.create({
     borderRightColor: '#eeeeee',
     borderWidth: 2
   },
+  newLocPanel: {
+    width: "80%",
+    height: "77%",
+    borderRadius: 35,
+    backgroundColor: "#eeeeee",
+    position: "absolute",
+    // marginTop: "10%",
+    top:"5%",
+    // bottom: 150,
+    // left: "100%",
+    // marginLeft: "5%",
+    right: "10%",
+    zIndex: 300,
+    borderBlockColor: "#609EEF",
+    borderLeftColor: "#609EEF",
+    borderRightColor: "#609EEF",
+    borderWidth: 2,
+    overflow: "hidden"
+  },
   locInfoPanel: {
     width: "80%",
     height: "77%",
@@ -78,7 +97,8 @@ const styles = StyleSheet.create({
     borderBlockColor: "#609EEF",
     borderLeftColor: "#609EEF",
     borderRightColor: "#609EEF",
-    borderWidth: 2
+    borderWidth: 2,
+    overflow: "hidden"
   },
   aquaSpotImg: {
     width: 150,
@@ -98,7 +118,7 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
   const [startCoordinates, setStartCoordinates] = useState<number[]>();
 
   const [locationPanelVisible, setlocationPanelVisible] = useState(false);
-  const [newTestPanelVisible, setNewTestPanelVisible] = useState(false);
+  const [newLocationPanelVisible, setNewLocationPanelVisible] = useState(false);
 
     useEffect(() => {
         getMarkers();
@@ -173,7 +193,7 @@ const addLocButtonPressed = () => {
     //  setTimeout(() => {
     //     getMarkers();
     // }, 1000);
-    setNewTestPanelVisible(true);
+    setNewLocationPanelVisible(true);
 };
 
 
@@ -183,10 +203,10 @@ const upd = (location: Mapbox.Location) => {
 
 const closePopout = () => {
     setlocationPanelVisible(false);
-    setNewTestPanelVisible(false);
+    setNewLocationPanelVisible(false);
 }
 
-const showlocationPanel = () => {
+const showLocationPanel = () => {
     return (
         <View style={styles.locInfoPanel}>
                 <LocationPanel 
@@ -200,15 +220,15 @@ const showlocationPanel = () => {
 } 
 
 
-const showNewTestPanel = () => {
+const showNewLocationPanel = () => {
     return (
-        <View style={styles.locInfoPanel}>
-                <NewTestPanel 
+        <View style={styles.newLocPanel}>
+                <NewLocationPanel 
                 name={'water fountain'} 
                 coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
                 imageSource='../../assets/fountain.jpeg'
                 >
-            </NewTestPanel>
+            </NewLocationPanel>
         </View>
     )
 } 
@@ -216,8 +236,8 @@ const showNewTestPanel = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        {locationPanelVisible ? showlocationPanel(): ""}
-        {newTestPanelVisible ? showNewTestPanel(): ""}
+        {locationPanelVisible ? showLocationPanel(): ""}
+        {newLocationPanelVisible ? showNewLocationPanel(): ""}
 
         <TouchableHighlight
           onPress={addLocButtonPressed}

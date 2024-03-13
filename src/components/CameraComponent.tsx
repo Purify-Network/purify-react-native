@@ -588,9 +588,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: "100%",
+    // backgroundColor: "red"
   },
   button: {
-    backgroundColor: 'gray',
+    backgroundColor: 'green',
   },
   backButton: {
     backgroundColor: 'rgba(0,0,0,0.0)',
@@ -619,15 +621,14 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 40,
     //ADD backgroundColor COLOR GREY
-    backgroundColor: '#B2BEB5',
+    backgroundColor: 'blue',
 
     alignSelf: 'center',
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: 'black',
   },
   image: {
     width: '100%',
-    height: '100%',
     aspectRatio: 1,
   },
 });

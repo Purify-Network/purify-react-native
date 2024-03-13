@@ -46,10 +46,6 @@ const styles = StyleSheet.create({
 
 const ProfileScreen = (): ReactElement => {
 
-  const camera = () => {
-    // let cam = new CameraComponent()
-  }
-
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -57,8 +53,6 @@ const ProfileScreen = (): ReactElement => {
         <Image source={require('../../assets/sharky.png')} style={styles.profPic}></Image>
       </View>
       <Text style={styles.username}>@sgrutman978</Text>
-      <Button title="hello" onPress={camera}></Button>
-      <CameraComponent />
     </SafeAreaView>
   );
 };

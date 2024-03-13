@@ -83,13 +83,6 @@ const HomeScreen = (props: HomeScreenProps): ReactElement => {
         });
     }, [])
 
-    useEffect(() => {
-      async function getPermission() {
-        const newCameraPermission = await Camera.requestCameraPermission();
-      }
-      getPermission();
-  }, [])
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <Image

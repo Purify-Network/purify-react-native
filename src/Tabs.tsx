@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {AppHeader} from './components';
+import AppHeader from './components/AppHeader';
 // import MapView, {Marker, Region} from 'react-native-maps';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getHeaderTitle} from '@react-navigation/elements';
@@ -20,6 +20,7 @@ import { Icon } from 'react-native-elements'
 import LeaderboardScreen from './screens/LeaderboardScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import HomeScreen from './screens/HomeScreen';
+import { Camera } from 'react-native-vision-camera';
 
 type TabsProps = {
   server: MainService
@@ -75,6 +76,14 @@ const Tabs = (props: TabsProps): ReactElement => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+
+  useEffect(() => {
+    async function getPermission() {
+      const newCameraPermission = await Camera.requestCameraPermission();
+    }
+    getPermission();
+}, [])
 
 
   return (

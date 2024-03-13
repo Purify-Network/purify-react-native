@@ -42,16 +42,17 @@ const LocationPanel: React.FC<LocationPanelProps> = ({ name, coordinates, testin
     container: {
       backgroundColor: '#fff',
       padding: 20,
-      marginBottom: 20,
-      borderRadius: 10,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
+      height: "100%"
+      // marginBottom: 20,
+      // borderRadius: 10,
+      // shadowColor: '#000',
+      // shadowOffset: {
+      //   width: 0,
+      //   height: 2,
+      // },
+      // shadowOpacity: 0.25,
+      // shadowRadius: 3.84,
+      // elevation: 5,
     },
     title: {
       fontSize: 24,

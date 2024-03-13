@@ -1,7 +1,7 @@
 import React, {ReactElement, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Tabs from './src/Tabs';
-import { AuthScreen } from './src/screens';
+import  AuthScreen from './src/screens/AuthScreen';
 import MainService from './src/services/MainService';
 import { _retrieveData } from './src/services/StorageService';
 
