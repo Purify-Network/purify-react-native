@@ -173,7 +173,7 @@ const onMarkerPress = () => {
 };
 
 const makeMarker = (lat: number, lng: number, color: string) => {
-    console.log("ghghgh");
+    // console.log("ghghgh");
   return (
     <Mapbox.PointAnnotation
       key={`marker${lat}-${lng}`}
@@ -227,6 +227,7 @@ const showNewLocationPanel = () => {
                 name={'water fountain'} 
                 coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
                 imageSource='../../assets/fountain.jpeg'
+                closePanel={closePopout}
                 >
             </NewLocationPanel>
         </View>
@@ -247,7 +248,7 @@ const showNewLocationPanel = () => {
         </TouchableHighlight>
 
         <Mapbox.MapView 
-        onPress={closePopout}
+        // onPress={closePopout}
         style={styles.map}
         styleURL='mapbox://styles/purify-network/clsz0u56w01cv01p4e9p5g0kx'>
             <Mapbox.Camera zoomLevel={16} centerCoordinate={(startCoordinates ? [startCoordinates[1], startCoordinates[0]] : [0,0])} />

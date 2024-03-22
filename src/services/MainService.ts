@@ -1,6 +1,3 @@
-import React, { useState, useEffect } from "react"; 
-import { Text, View, StyleSheet, Alert } from 'react-native'; 
-import { Button } from "react-native-paper"; 
 import CryptoJS from 'react-native-crypto-js';
   
 class MainService {
@@ -16,7 +13,7 @@ class MainService {
         console.log("tttttt");
         try { 
             return await fetch( 
-                'http://64.23.146.168:3000/login', requestOptions) 
+                'https://purify.network:3000/login/', requestOptions) 
                 .then(response => { 
                     return response.json() 
                         .then(data => { 
@@ -43,7 +40,7 @@ class MainService {
         console.log("fffff");
         try { 
             await fetch( 
-                'http://64.23.146.168:3000/signup', requestOptions) 
+                'https://purify.network:3000/signup', requestOptions) 
                 .then(response => { 
                     response.json() 
                         .then(data => { 
@@ -64,7 +61,7 @@ class MainService {
             // body: JSON.stringify({ lat: lat, lng: lng, radius: radius }) 
         }; 
         console.log("fffff");
-        let url = `http://64.23.146.168:3000/locs-near-me?lng=${lng}&lat=${lat}&radius=${radius}`;
+        let url = `https://purify.network:3000/locs-near-me?lng=${lng}&lat=${lat}&radius=${radius}`;
         try { 
             return fetch( 
                 url, requestOptions) 
@@ -90,7 +87,7 @@ class MainService {
             headers: { 'Content-Type': 'application/json' }
         }; 
         console.log("fffff");
-        let url = `http://64.23.146.168:3000/${endpoint}`;
+        let url = `https://purify.network:3000/${endpoint}`;
         try { 
             return fetch( 
                 url, requestOptions) 
@@ -118,7 +115,7 @@ class MainService {
         console.log("fffff");
         try { 
             await fetch( 
-                'http://64.23.146.168:3000/new-loc', requestOptions) 
+                'https://purify.network:3000/new-loc', requestOptions) 
                 .then(response => { 
                     response.json() 
                         .then(data => { 
