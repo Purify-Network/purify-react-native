@@ -228,6 +228,7 @@ const showNewLocationPanel = () => {
                 coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
                 imageSource='../../assets/fountain.jpeg'
                 closePanel={closePopout}
+                server={props.server}
                 >
             </NewLocationPanel>
         </View>

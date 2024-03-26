@@ -1,6 +1,16 @@
 import CryptoJS from 'react-native-crypto-js';
+import axios from 'axios';
   
 class MainService {
+
+
+    uploadImage = async (image: FormData) => {
+        axios.post('https://purify.network:3000/upload-image', image)
+        .then(res => {
+        console.log('Axios response: ', res)
+        })
+    }
+
 
     login = async (username: string, password: string) => { 
         const hashedPassword = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);

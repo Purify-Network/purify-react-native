@@ -2,6 +2,10 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {Button, Dimensions, FlatList, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 import CameraComponent from './CameraComponent';
+import MainService from '../services/MainService';
+// import * as fs from 'fs';
+import { Blob } from "buffer";
+
 
 interface Coordinates {
     latitude: number;
@@ -18,7 +22,8 @@ interface Coordinates {
     coordinates: Coordinates;
     testingInfo: TestingInfo[];
     imageSource: string;
-    closePanel: () => void
+    closePanel: () => void,
+    server: MainService
   }
 
   const styles2 = StyleSheet.create({
@@ -112,10 +117,12 @@ interface Coordinates {
     },
   });
 
-const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, testingInfo, imageSource, closePanel }) => {
+
+const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, testingInfo, imageSource, closePanel, server }) => {
 
   const [showFormStep, setshowFormStep] = useState(3);
   const [imgPath, setImgPath] = useState('https://i.fbcd.co/products/resized/resized-750-500/f8b30a80c3dd7846280debe018062435fb0273b9a391c2d05b1783ac5a473077.jpg');
+  // const [image, setImage] = useState<FormData>();
   let pp = -1;
   let lt = -1;
 
@@ -131,6 +138,10 @@ const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, 
     setshowFormStep(0);
 }
 
+const getPhotoBlob = (imageData: any) => {
+  setImgPath(imageData);
+}
+
 const publicPrivate = (mode: number) => {
   pp = mode;
   setshowFormStep(3);
@@ -139,6 +150,21 @@ const publicPrivate = (mode: number) => {
 const locType = (type: number) => {
   lt = type;
   setshowFormStep(0);
+}
+
+const addAquaSpot = () => {
+  uploadImage();
+}
+
+const uploadImage = () => {
+  // let buffer = fs.readFileSync(imageSource);
+  // let blob = new Blob([buffer]);
+
+  const formData = new FormData(); 
+  // formData.append('my-image-file', new File([blob], imageSource));
+  formData.append('type', 'file')
+  formData.append('image', imgPath)
+  server.uploadImage(formData);
 }
 
 const finalPage = () => {
@@ -160,7 +186,7 @@ const finalPage = () => {
         </View>
       )} /> */}
       <TouchableHighlight
-          onPress={closePanel}
+          onPress={addAquaSpot}
           underlayColor="white"
           style={styles2.bottomButton}>
             <Text>Add AquaSpot</Text>
