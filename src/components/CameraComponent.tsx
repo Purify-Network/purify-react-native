@@ -454,6 +454,8 @@ console.log(useCameraDevice('back'));
       ...Templates.Instagram,
       { photoAspectRatio: 1 },
       // { photoResolution: { width: 3048, height: 3048 } },
+      { photoResolution: 'max' },
+    { pixelFormat: 'native' },
     ]);
 
     //  const format = useCameraFormat(device, Templates.FrameProcessingRGB)

@@ -1134,6 +1134,8 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
+  - RNFS (2.20.0):
+    - React-Core
   - RNGestureHandler (2.15.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1249,6 +1251,7 @@ DEPENDENCIES:
   - ReactNativeGetLocation (from `../node_modules/react-native-get-location`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "rnmapbox-maps (from `../node_modules/@rnmapbox/maps`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -1386,6 +1389,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   rnmapbox-maps:
@@ -1471,6 +1476,7 @@ SPEC CHECKSUMS:
   ReactNativeGetLocation: b4379a01dff72507d9abce5f4d569b98abef7761
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   rnmapbox-maps: 9c1b8403c28d354c8f0ad142d765054544f90cea
   RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
