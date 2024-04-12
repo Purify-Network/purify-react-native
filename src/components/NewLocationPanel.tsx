@@ -124,8 +124,10 @@ const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, 
   const [showFormStep, setshowFormStep] = useState(3);
   const [imgPath, setImgPath] = useState('https://i.fbcd.co/products/resized/resized-750-500/f8b30a80c3dd7846280debe018062435fb0273b9a391c2d05b1783ac5a473077.jpg');
   // const [image, setImage] = useState<FormData>();
-  const [files, setFiles] = useState("");
-  let pp = -1;
+  // const [files, setFiles] = useState("");
+  const [inputName, setInputName] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
+  // let pp = -1;
   let lt = -1;
 
 
@@ -140,45 +142,54 @@ const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, 
     setshowFormStep(0);
 }
 
-const getPhotoBlob = (imageData: any) => {
-  setImgPath(imageData);
-}
+// const getPhotoBlob = (imageData: any) => {
+//   setImgPath(imageData);
+// }
 
-const publicPrivate = (mode: number) => {
-  pp = mode;
-  setshowFormStep(3);
-}
+// const publicPrivate = (mode: number) => {
+//   pp = mode;
+//   setshowFormStep(3);
+// }
 
 const locType = (type: number) => {
   lt = type;
   setshowFormStep(0);
 }
 
-const getFileContent = async (path: string) => {
-  console.log("popop");
-  console.log(path);
-  // console.log(RNFS.PicturesDirectoryPath);
-  const reader = await RNFS.readFile(path);
-  setFiles(reader);
-  console.log("hhh");
-  console.log(files);
-};
+// const getFileContent = async (path: string) => {
+//   console.log("popop");
+//   console.log(path);
+//   // console.log(RNFS.PicturesDirectoryPath);
+//   const reader = await RNFS.readFile(path);
+//   // setFiles(reader);
+//   console.log("hhh");
+//   // console.log(files);
+// };
 
 const addAquaSpot = () => {
-  uploadImage();
+  let noSpacesInputName = inputName.replace(' ', '');
+  let filename = noSpacesInputName + Date.now() + '.jpeg';
+  uploadImage(filename);
+  server.new_loc(inputName, filename, coordinates.latitude, coordinates.longitude, Math.floor(Date.now()/1000))
 }
 
-const uploadImage = () => {
+const uploadImage = (filename: string) => {
   // let buffer = fs.readFileSync(imageSource);
   // let blob = new Blob([buffer]);
 
 // console.log(RNFS.DocumentDirectoryPath);
-getFileContent(imgPath);
+// getFileContent(imgPath);
+
+// console.log(inputName);
+// let noSpacesInputName = inputName.replace(' ', '');
+// console.log(noSpacesInputName);
+
+// let filename = noSpacesInputName + Date.now() + '.jpeg';
 
 var files = [
   {
-    name: 'image12',
-    filename: 'image12.jpeg',
+    name: "image12",
+    filename: filename,
     filepath: imgPath,
     filetype: 'image/jpeg'
   }
@@ -192,7 +203,9 @@ RNFS.uploadFiles({
     'Accept': 'application/json',
   },
   fields: {
-    'hello': 'world',
+    'name': inputName,
+    'description': inputDescription,
+    'filename': filename
   },
   // begin: uploadBegin,
   // progress: uploadProgress
@@ -225,8 +238,14 @@ const finalPage = () => {
         uri: imgPath,
       }} style={styles2.image} resizeMode="cover" />
     </Pressable>
-    <TextInput style={styles2.title}>AquaSpot Name</TextInput>
-    <TextInput numberOfLines={3} style={styles2.subtitle}>Please describe this AquaSpot</TextInput>
+    <TextInput 
+      style={styles2.title}
+      onChangeText={newText => setInputName(newText)}  
+    >AquaSpot Name</TextInput>
+    <TextInput 
+      numberOfLines={3} 
+      style={styles2.subtitle} 
+      onChangeText={newText => setInputDescription(newText)}>Please describe this AquaSpot</TextInput>
     {/* <FlatList
       data={testingInfo}
       keyExtractor={(item, index) => index.toString()}

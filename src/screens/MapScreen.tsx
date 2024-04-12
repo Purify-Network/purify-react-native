@@ -22,6 +22,7 @@ export type MarkerType = {
           longitude: number,
         },
         title: string,
+        image_url: string
       //   description: 'big',
 }
 
@@ -116,6 +117,7 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
   const [coordinates, setCoordinates] = useState([-5, 55]);
   const [markers, setMarkers] = useState<MarkerType[]>([]);
   const [startCoordinates, setStartCoordinates] = useState<number[]>();
+  const [currentLoc, setCurrentLoc] = useState<MarkerType>();
 
   const [locationPanelVisible, setlocationPanelVisible] = useState(false);
   const [newLocationPanelVisible, setNewLocationPanelVisible] = useState(false);
@@ -130,13 +132,14 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
         const markersTmp: MarkerType[] = [];
         props.server.getNearbyLocs(10, 10, 200)!
         .then((data) => {
-        data.forEach((loc: { latitude: any; longitude: any; name: any; }) => {
+        data.forEach((loc: { latitude: any; longitude: any; name: any; image_path: any; }) => {
             markersTmp.push({
                 latlng: {
                     latitude: loc.latitude,
                     longitude: loc.longitude
                 },
-                title: loc.name
+                title: loc.name,
+                image_url: "https://purify.network:3000/uploads/" + loc.image_path
             })
     })
     setMarkers(markersTmp);
@@ -167,19 +170,20 @@ const markerView = (color: string) => {
       );
 };
 
-const onMarkerPress = () => {
+const onMarkerPress = (marker: MarkerType) => {
   setlocationPanelVisible(true);
+  setCurrentLoc(marker);
     console.log(locationPanelVisible);
 };
 
-const makeMarker = (lat: number, lng: number, color: string) => {
+const makeMarker = (marker: MarkerType, color: string) => {
     // console.log("ghghgh");
   return (
     <Mapbox.PointAnnotation
-      key={`marker${lat}-${lng}`}
-      id={`marker${lat}-${lng}`}
-      coordinate={[lat, lng]}
-      onSelected={onMarkerPress}
+      key={`marker${marker.latlng.latitude}-${marker.latlng.longitude}`}
+      id={`marker${marker.latlng.latitude}-${marker.latlng.longitude}`}
+      coordinate={[marker.latlng.latitude, marker.latlng.longitude]}
+      onSelected={() => onMarkerPress(marker)}
     >
     {markerView(color)}
     </Mapbox.PointAnnotation>
@@ -210,9 +214,10 @@ const showLocationPanel = () => {
     return (
         <View style={styles.locInfoPanel}>
                 <LocationPanel 
-                name={'water fountain'} 
-                coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
-                imageSource='../../assets/fountain.jpeg'
+                name={currentLoc!.title} 
+                coordinates={{latitude: currentLoc!.latlng.latitude, longitude: currentLoc!.latlng.longitude}} 
+                testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
+                imageSource={currentLoc!.image_url}
                 >
             </LocationPanel>
         </View>
@@ -254,7 +259,7 @@ const showNewLocationPanel = () => {
         styleURL='mapbox://styles/purify-network/clsz0u56w01cv01p4e9p5g0kx'>
             <Mapbox.Camera zoomLevel={16} centerCoordinate={(startCoordinates ? [startCoordinates[1], startCoordinates[0]] : [0,0])} />
             {markers.map((marker, index) => (
-                makeMarker(marker.latlng.latitude, marker.latlng.longitude, "green")
+                makeMarker(marker, "green")
             ))}
             <Mapbox.UserLocation onUpdate={upd} showsUserHeadingIndicator></Mapbox.UserLocation>
         </Mapbox.MapView>

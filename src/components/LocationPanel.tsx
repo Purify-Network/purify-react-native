@@ -22,7 +22,8 @@ interface Coordinates {
 const LocationPanel: React.FC<LocationPanelProps> = ({ name, coordinates, testingInfo, imageSource }) => {
     return (
       <View style={styles2.container}>
-        <Image source={require('../../assets/fountain.jpeg')} style={styles2.image} />
+        <Image source={{ uri: imageSource}} style={styles2.image} />
+        {/* require('../../assets/fountain.jpeg') */}
         <Text style={styles2.title}>{name}</Text>
         <Text style={styles2.subtitle}>Coordinates: {coordinates.latitude}, {coordinates.longitude}</Text>
         <FlatList
