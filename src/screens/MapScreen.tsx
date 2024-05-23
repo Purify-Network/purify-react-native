@@ -9,6 +9,7 @@ import { LocationPuck } from '@rnmapbox/maps';
 import Mapbox from '@rnmapbox/maps';
 import LocationPanel from '../components/LocationPanel';
 import NewLocationPanel from '../components/NewLocationPanel';
+import NewTestPanel from '../components/NewTestPanel';
 Mapbox.setAccessToken('pk.eyJ1IjoicHVyaWZ5LW5ldHdvcmsiLCJhIjoiY2xzeXpsdjBqMGpraDJxbm55bWZ4aDV3YSJ9.yQsnZeNbvSsx-rw-J4s5Bg');
 
 
@@ -21,9 +22,7 @@ export type MarkerType = {
           latitude: number,
           longitude: number,
         },
-        title: string,
-        image_url: string
-      //   description: 'big',
+        locid: number
 }
 
 const styles = StyleSheet.create({
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
-    backgroundColor: "red",
+    // backgroundColor: "red",
     position: "absolute",
     zIndex: 20
   },
@@ -121,6 +120,7 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
 
   const [locationPanelVisible, setlocationPanelVisible] = useState(false);
   const [newLocationPanelVisible, setNewLocationPanelVisible] = useState(false);
+  const [newTestPanelVisible, setNewTestPanelVisible] = useState(false);
 
     useEffect(() => {
         getMarkers();
@@ -132,14 +132,13 @@ const MapScreen = (props: MapScreenProps): ReactElement => {
         const markersTmp: MarkerType[] = [];
         props.server.getNearbyLocs(10, 10, 200)!
         .then((data) => {
-        data.forEach((loc: { latitude: any; longitude: any; name: any; image_path: any; }) => {
+        data.forEach((loc: { latitude: any; longitude: any; id: number}) => {
             markersTmp.push({
                 latlng: {
                     latitude: loc.latitude,
                     longitude: loc.longitude
                 },
-                title: loc.name,
-                image_url: "https://purify.network:3000/uploads/" + loc.image_path
+                locid: loc.id
             })
     })
     setMarkers(markersTmp);
@@ -171,9 +170,11 @@ const markerView = (color: string) => {
 };
 
 const onMarkerPress = (marker: MarkerType) => {
-  setlocationPanelVisible(true);
+  // console.log("jhjhj");
+  // console.log(marker);
   setCurrentLoc(marker);
-    console.log(locationPanelVisible);
+  setlocationPanelVisible(true);
+    // console.log(locationPanelVisible);
 };
 
 const makeMarker = (marker: MarkerType, color: string) => {
@@ -197,7 +198,9 @@ const addLocButtonPressed = () => {
     //  setTimeout(() => {
     //     getMarkers();
     // }, 1000);
+    setlocationPanelVisible(false);
     setNewLocationPanelVisible(true);
+    setNewTestPanelVisible(false);
 };
 
 
@@ -208,16 +211,25 @@ const upd = (location: Mapbox.Location) => {
 const closePopout = () => {
     setlocationPanelVisible(false);
     setNewLocationPanelVisible(false);
+    setNewTestPanelVisible(false);
+}
+
+const newTest = () => {
+  setlocationPanelVisible(false);
+  setNewLocationPanelVisible(false);
+  setNewTestPanelVisible(true);
 }
 
 const showLocationPanel = () => {
     return (
         <View style={styles.locInfoPanel}>
                 <LocationPanel 
-                name={currentLoc!.title} 
+                server={props.server}
+                locid={currentLoc!.locid} 
+                closePanel={closePopout}
+                newTest={newTest}
                 coordinates={{latitude: currentLoc!.latlng.latitude, longitude: currentLoc!.latlng.longitude}} 
                 testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
-                imageSource={currentLoc!.image_url}
                 >
             </LocationPanel>
         </View>
@@ -230,7 +242,7 @@ const showNewLocationPanel = () => {
         <View style={styles.newLocPanel}>
                 <NewLocationPanel 
                 name={'water fountain'} 
-                coordinates={{latitude: 50.4, longitude: 23.5}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
+                coordinates={{latitude: coordinates[1], longitude: coordinates[0]}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
                 imageSource='../../assets/fountain.jpeg'
                 closePanel={closePopout}
                 server={props.server}
@@ -240,11 +252,27 @@ const showNewLocationPanel = () => {
     )
 } 
 
+const showNewTestPanel = () => {
+  return (
+      <View style={styles.newLocPanel}>
+              <NewTestPanel 
+              name={'water fountain'} 
+              coordinates={{latitude: coordinates[1], longitude: coordinates[0]}} testingInfo={[{testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}, {testResult: "tov", testType: "PH"}]} 
+              imageSource='../../assets/fountain.jpeg'
+              closePanel={closePopout}
+              server={props.server}
+              >
+          </NewTestPanel>
+      </View>
+  )
+} 
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
         {locationPanelVisible ? showLocationPanel(): ""}
         {newLocationPanelVisible ? showNewLocationPanel(): ""}
+        {newTestPanelVisible ? showNewTestPanel(): ""}
 
         <TouchableHighlight
           onPress={addLocButtonPressed}

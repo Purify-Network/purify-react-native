@@ -18,7 +18,7 @@ interface Coordinates {
     testResult: string;
   }
   
-  interface NewLocationPanelProps {
+  interface NewTestPanelProps {
     name: string;
     coordinates: Coordinates;
     testingInfo: TestingInfo[];
@@ -52,8 +52,8 @@ interface Coordinates {
       width: "39.5%", 
       // position: "relative", 
       marginLeft: "7%",
-      marginTop: 21
-      // backgroundColor: "yellow"
+      marginTop: 21,
+      backgroundColor: "yellow"
     },
     container2: {
       // backgroundColor: '#827463',
@@ -119,7 +119,7 @@ interface Coordinates {
   });
 
 
-const NewLocationPanel: React.FC<NewLocationPanelProps> = ({ name, coordinates, testingInfo, imageSource, closePanel, server }) => {
+const NewTestPanel: React.FC<NewTestPanelProps> = ({ name, coordinates, testingInfo, imageSource, closePanel, server }) => {
 
   const [showFormStep, setshowFormStep] = useState(3);
   const [imgPath, setImgPath] = useState('https://i.fbcd.co/products/resized/resized-750-500/f8b30a80c3dd7846280debe018062435fb0273b9a391c2d05b1783ac5a473077.jpg');
@@ -319,4 +319,4 @@ const displayLocType = () => {
     );
   };
 
-  export default NewLocationPanel;
+  export default NewTestPanel;

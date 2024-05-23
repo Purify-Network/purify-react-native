@@ -91,6 +91,34 @@ class MainService {
     } 
 
 
+    getLoc = (locid: number) => { 
+        const requestOptions = { 
+            method: 'GET', 
+            headers: { 'Content-Type': 'application/json' }, 
+            // body: JSON.stringify({ lat: lat, lng: lng, radius: radius }) 
+        }; 
+        console.log("fffff");
+        console.log(locid);
+        let url = `https://purify.network:3000/loc?locid=${locid}`;
+        try { 
+            return fetch( 
+                url, requestOptions) 
+                .then(response => { 
+                    return response.json() 
+                        .then(data => { 
+                            console.log("ggg2");
+                            console.log(data); 
+                            return data;
+                        }); 
+                }) 
+        } 
+        catch (error) { 
+            // return new Promise<any>();
+            console.error(error); 
+        } 
+    } 
+
+
     genericGetNoParams = (endpoint: string) => { 
         const requestOptions = { 
             method: 'GET', 

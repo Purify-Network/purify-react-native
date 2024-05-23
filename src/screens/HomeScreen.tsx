@@ -45,9 +45,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlign: "center",
     color: "#3A64B8",
-    width: 250,
+    width: "80%",
+    marginLeft: "10%",
+    marginBottom: 18,
     fontSize: 36,
-    borderRadius: 20
+    borderRadius: 20,
+    borderColor: "blue",
+    paddingBottom: 10,
+    paddingTop: 10
   },
   // raindrop: {
   //   width: 100,
